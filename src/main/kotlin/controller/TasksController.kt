@@ -6,12 +6,10 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api")
-class TestController {
-
+class TasksController {
     @GetMapping("/qiitas")
     fun index(): String {
         println("test456")
         return ""
     }
-
 }
