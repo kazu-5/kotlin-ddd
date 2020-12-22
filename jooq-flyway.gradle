@@ -1,0 +1,91 @@
+// TODO Kotlin DSL に修正
+
+// TODO JOOQ のバージョンを Spring の JOOQ に一致させる
+def jooqVersion = '3.12.4'
+// TODO Flyway のバージョンを確認
+
+def dbHost = "127.0.0.1"
+def dbSchema = "task_manage"
+def dbUser = "root"
+def dbPassword = "password"
+def dbUrl = "jdbc:mysql://${dbHost}/${dbSchema}?useSSL=false"
+
+def jooqTargetDirectory = 'src/main/java'
+def jooqTargetPackageName = 'com.example.demo.infrastructure.jooq.generated'
+
+buildscript {
+    repositories {
+        maven {
+            url = uri('https://plugins.gradle.org/m2/')
+        }
+    }
+    dependencies {
+        classpath('nu.studer:gradle-jooq-plugin:4.1')
+        classpath('org.flywaydb:flyway-gradle-plugin:6.1.1')
+    }
+}
+
+apply plugin: nu.studer.gradle.jooq.JooqPlugin
+apply plugin: 'java'
+apply plugin: org.flywaydb.gradle.FlywayPlugin
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'mysql:mysql-connector-java'
+}
+
+flyway {
+    url = dbUrl
+    user = dbUser
+    password = dbPassword
+}
+
+// see https://qiita.com/nabedge/items/89fae15068e7a317a668
+// see https://github.com/nabedge/jooq-flyway-spboot-sample/blob/master/pj-db/build.gradle
+jooq {
+    version = jooqVersion
+    edition = 'OSS'
+    tables(sourceSets.main) {
+        jdbc {
+            driver = 'com.mysql.jdbc.Driver'
+            url = dbUrl
+            user = dbUser
+            password = dbPassword
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                name = 'org.jooq.meta.mysql.MySQLDatabase'
+                includes = '.*'
+                excludes = ''
+            }
+            target {
+                directory = jooqTargetDirectory
+                packageName = jooqTargetPackageName
+            }
+            strategy {
+                name = null
+                matchers {
+                    tables {
+                        table {
+                            tableClass {
+                                transform = 'UPPER'
+                                expression = '\$0_TABLE'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+clean {
+    def cleanUpDirectory = jooqTargetDirectory + '/' + jooqTargetPackageName.tr('.', '/')
+    println "Clean up target directory is ${cleanUpDirectory} ..."
+    delete cleanUpDirectory
+}
