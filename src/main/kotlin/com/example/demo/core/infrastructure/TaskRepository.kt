@@ -15,7 +15,7 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
 
 
     override fun findAll(): List<Task> {
-        val records: Result<Record5<Int, String, Int, Timestamp, Timestamp>>? = ctx.select(
+        val result: Result<Record5<Int, String, Int, Timestamp, Timestamp>>? = ctx.select(
             Tasks.TASKS.ID,
             Tasks.TASKS.NAME,
             Tasks.TASKS.USER_ID,
@@ -25,14 +25,14 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
             .from(Tasks.TASKS)
             .fetch()
 
-        if (records != null) {
-            val result = records.map { (item) -> records.getValue(0,Tasks.TASKS.NAME) }
-            println(result)
+        if (result != null) {
+            val list = result.map { r ->
+                r.get(Tasks.TASKS.NAME)
+                Task(TaskId(r.get(Tasks.TASKS.ID)), TaskName(r.get(Tasks.TASKS.NAME)))
+            }
+            return list
         }
-
-        val list = mutableListOf<Task>()
-        list.add(Task(TaskId(1), TaskName("name")))
-        return list
+        return mutableListOf<Task>()
     }
 }
 
