@@ -1,12 +1,7 @@
 package com.example.demo.api.controller.shared.response
 
-class Response<T>(task: T): IResponse {
-    var data: T? = null
-    var statusSuccess = false
-    fun Response(data: T) {
-        statusSuccess = true
-        this.data = data
-    }
+class Response<T>(val data: T?): IResponse {
+    var statusSuccess = true
 
     override fun isStatusSuccess(): Boolean {
         return statusSuccess
