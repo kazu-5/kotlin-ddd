@@ -1,9 +1,7 @@
 package com.example.demo.core.usecase
 
-import com.example.demo.core.domain.TaskId
-
 class TaskDto(
-    val id: TaskId,
+    val id: Int,
     val name: String
 ) {
 }

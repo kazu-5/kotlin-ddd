@@ -20,8 +20,7 @@ class TasksController(private val taskService: TaskUseCase) {
     @GetMapping("")
     fun index(): IResponse {
         println(taskService.list())
-        val tasks:List<TaskDto>? = taskService.list()?.map { (id,name) -> TaskDto(id, "test") }
-        println(tasks)
+        val tasks:List<TaskDto>? = taskService.list()?.map { (id,name) -> TaskDto(id.value, name.value) }
         if (tasks != null) {
             return Response<List<TaskDto>>(tasks)
         } else {
