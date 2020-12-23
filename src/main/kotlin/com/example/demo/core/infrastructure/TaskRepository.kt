@@ -13,7 +13,6 @@ import java.sql.Timestamp
 @Repository
 class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
 
-
     override fun findAll(): List<Task> {
         val result: Result<Record5<Int, String, Int, Timestamp, Timestamp>>? = ctx.select(
             Tasks.TASKS.ID,
@@ -34,10 +33,22 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
         }
         return mutableListOf<Task>()
     }
+
+    override fun find(id: TaskId): Task? {
+        val result: Record5<Int, String, Int, Timestamp, Timestamp>? = ctx.select(
+            Tasks.TASKS.ID,
+            Tasks.TASKS.NAME,
+            Tasks.TASKS.USER_ID,
+            Tasks.TASKS.CREATED_ON,
+            Tasks.TASKS.UPDATED_ON
+        )
+            .from(Tasks.TASKS)
+            .where(Tasks.TASKS.ID.eq(id.value))
+            .firstOrNull()
+
+        if (result != null) {
+            return Task(TaskId(result.get(Tasks.TASKS.ID)), TaskName(result.get(Tasks.TASKS.NAME)))
+        }
+        return null
+    }
 }
-
-private typealias RecordMapType = Map<Tasks, Result<RecordType>>
-
-private typealias RecordMapEntryType = Map.Entry<Tasks, Result<RecordType>>
-
-private typealias RecordType = Record4<Int, String, String, String>
