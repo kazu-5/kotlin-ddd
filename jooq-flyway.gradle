@@ -11,7 +11,7 @@ def dbPassword = "password"
 def dbUrl = "jdbc:mysql://${dbHost}/${dbSchema}?useSSL=false"
 
 def jooqTargetDirectory = 'src/main/java'
-def jooqTargetPackageName = 'com.example.demo.com.example.demo.infrastructure.jooq.generated'
+def jooqTargetPackageName = 'com.example.demo.com.example.demo.core.infrastructure.jooq.generated'
 
 buildscript {
     repositories {
