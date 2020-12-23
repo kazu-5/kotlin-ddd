@@ -1,4 +1,4 @@
-package com.example.demo.controller.shared.response
+package com.example.demo.api.controller.shared.response
 
 class Response<T> {
     private var data: T? = null
