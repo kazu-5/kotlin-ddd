@@ -13,7 +13,7 @@ import java.sql.Timestamp
 @Repository
 class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
 
-    override fun findAll(): List<Task> {
+    override fun findAll(): List<Task>? {
         val result: Result<Record5<Int, String, Int, Timestamp, Timestamp>>? = ctx.select(
             Tasks.TASKS.ID,
             Tasks.TASKS.NAME,
@@ -31,7 +31,7 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
             }
             return list
         }
-        return mutableListOf<Task>()
+        return null
     }
 
     override fun find(id: TaskId): Task? {
