@@ -11,7 +11,7 @@ def dbPassword = "password"
 def dbUrl = "jdbc:mysql://${dbHost}/${dbSchema}?useSSL=false"
 
 def jooqTargetDirectory = 'src/main/java'
-def jooqTargetPackageName = 'com.example.demo.infrastructure.jooq.generated'
+def jooqTargetPackageName = 'com.example.demo.com.example.demo.infrastructure.jooq.generated'
 
 buildscript {
     repositories {
@@ -57,9 +57,10 @@ jooq {
             password = dbPassword
         }
         generator {
-            name = 'org.jooq.codegen.DefaultGenerator'
+            name = 'org.jooq.codegen.JavaGenerator'
             database {
                 name = 'org.jooq.meta.mysql.MySQLDatabase'
+                inputSchema='task_manage'
                 includes = '.*'
                 excludes = ''
             }
@@ -68,18 +69,22 @@ jooq {
                 packageName = jooqTargetPackageName
             }
             strategy {
-                name = null
-                matchers {
-                    tables {
-                        table {
-                            tableClass {
-                                transform = 'UPPER'
-                                expression = '\$0_TABLE'
-                            }
-                        }
-                    }
-                }
+                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
             }
+//            strategy {
+//                name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+//                name = null
+//                matchers {
+//                    tables {
+//                        table {
+//                            tableClass {
+//                                transform = 'UPPER'
+//                                expression = '\$0_TABLE'
+//                            }
+//                        }
+//                    }
+//                }
+//            }
         }
     }
 }
