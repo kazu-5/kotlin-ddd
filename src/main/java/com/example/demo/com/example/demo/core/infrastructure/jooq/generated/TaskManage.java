@@ -5,6 +5,7 @@ package com.example.demo.com.example.demo.core.infrastructure.jooq.generated;
 
 
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.FlywaySchemaHistory;
+import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Groups;
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Tasks;
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Users;
 
@@ -32,7 +33,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class TaskManage extends SchemaImpl {
 
-    private static final long serialVersionUID = -1200794588;
+    private static final long serialVersionUID = -688531134;
 
     /**
      * The reference instance of <code>task_manage</code>
@@ -43,6 +44,11 @@ public class TaskManage extends SchemaImpl {
      * The table <code>task_manage.flyway_schema_history</code>.
      */
     public final FlywaySchemaHistory FLYWAY_SCHEMA_HISTORY = com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY;
+
+    /**
+     * The table <code>task_manage.groups</code>.
+     */
+    public final Groups GROUPS = com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Groups.GROUPS;
 
     /**
      * The table <code>task_manage.tasks</code>.
@@ -77,6 +83,7 @@ public class TaskManage extends SchemaImpl {
     private final List<Table<?>> getTables0() {
         return Arrays.<Table<?>>asList(
             FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY,
+            Groups.GROUPS,
             Tasks.TASKS,
             Users.USERS);
     }

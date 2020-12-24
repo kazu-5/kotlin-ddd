@@ -21,7 +21,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row5;
+import org.jooq.Row6;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tasks extends TableImpl<TasksRecord> {
 
-    private static final long serialVersionUID = -1824401751;
+    private static final long serialVersionUID = 1631483338;
 
     /**
      * The reference instance of <code>task_manage.tasks</code>
@@ -72,6 +72,11 @@ public class Tasks extends TableImpl<TasksRecord> {
      * The column <code>task_manage.tasks.user_id</code>.
      */
     public final TableField<TasksRecord, Integer> USER_ID = createField(DSL.name("user_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>task_manage.tasks.group_id</code>.
+     */
+    public final TableField<TasksRecord, Integer> GROUP_ID = createField(DSL.name("group_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>task_manage.tasks.created_on</code>.
@@ -123,7 +128,7 @@ public class Tasks extends TableImpl<TasksRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.TASKS_FK_USERS, Indexes.TASKS_PRIMARY);
+        return Arrays.<Index>asList(Indexes.TASKS_FK_GROUPS, Indexes.TASKS_FK_USERS, Indexes.TASKS_PRIMARY);
     }
 
     @Override
@@ -143,11 +148,15 @@ public class Tasks extends TableImpl<TasksRecord> {
 
     @Override
     public List<ForeignKey<TasksRecord, ?>> getReferences() {
-        return Arrays.<ForeignKey<TasksRecord, ?>>asList(Keys.TASKS_IBFK_1);
+        return Arrays.<ForeignKey<TasksRecord, ?>>asList(Keys.TASKS_IBFK_1, Keys.TASKS_IBFK_2);
     }
 
     public Users users() {
         return new Users(this, Keys.TASKS_IBFK_1);
+    }
+
+    public Groups groups() {
+        return new Groups(this, Keys.TASKS_IBFK_2);
     }
 
     @Override
@@ -177,11 +186,11 @@ public class Tasks extends TableImpl<TasksRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row5 type methods
+    // Row6 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row5<Integer, String, Integer, Timestamp, Timestamp> fieldsRow() {
-        return (Row5) super.fieldsRow();
+    public Row6<Integer, String, Integer, Integer, Timestamp, Timestamp> fieldsRow() {
+        return (Row6) super.fieldsRow();
     }
 }

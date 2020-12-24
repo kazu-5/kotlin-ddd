@@ -5,6 +5,7 @@ package com.example.demo.com.example.demo.core.infrastructure.jooq.generated;
 
 
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.FlywaySchemaHistory;
+import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Groups;
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Tasks;
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Users;
 
@@ -34,8 +35,11 @@ public class Indexes {
 
     public static final Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Indexes0.FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX;
     public static final Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Indexes0.FLYWAY_SCHEMA_HISTORY_PRIMARY;
+    public static final Index GROUPS_PRIMARY = Indexes0.GROUPS_PRIMARY;
+    public static final Index TASKS_FK_GROUPS = Indexes0.TASKS_FK_GROUPS;
     public static final Index TASKS_FK_USERS = Indexes0.TASKS_FK_USERS;
     public static final Index TASKS_PRIMARY = Indexes0.TASKS_PRIMARY;
+    public static final Index USERS_FK_GROUPS = Indexes0.USERS_FK_GROUPS;
     public static final Index USERS_PRIMARY = Indexes0.USERS_PRIMARY;
 
     // -------------------------------------------------------------------------
@@ -45,8 +49,11 @@ public class Indexes {
     private static class Indexes0 {
         public static Index FLYWAY_SCHEMA_HISTORY_FLYWAY_SCHEMA_HISTORY_S_IDX = Internal.createIndex("flyway_schema_history_s_idx", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.SUCCESS }, false);
         public static Index FLYWAY_SCHEMA_HISTORY_PRIMARY = Internal.createIndex("PRIMARY", FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY, new OrderField[] { FlywaySchemaHistory.FLYWAY_SCHEMA_HISTORY.INSTALLED_RANK }, true);
+        public static Index GROUPS_PRIMARY = Internal.createIndex("PRIMARY", Groups.GROUPS, new OrderField[] { Groups.GROUPS.ID }, true);
+        public static Index TASKS_FK_GROUPS = Internal.createIndex("fk_groups", Tasks.TASKS, new OrderField[] { Tasks.TASKS.GROUP_ID }, false);
         public static Index TASKS_FK_USERS = Internal.createIndex("fk_users", Tasks.TASKS, new OrderField[] { Tasks.TASKS.USER_ID }, false);
         public static Index TASKS_PRIMARY = Internal.createIndex("PRIMARY", Tasks.TASKS, new OrderField[] { Tasks.TASKS.ID }, true);
+        public static Index USERS_FK_GROUPS = Internal.createIndex("fk_groups", Users.USERS, new OrderField[] { Users.USERS.GROUP_ID }, false);
         public static Index USERS_PRIMARY = Internal.createIndex("PRIMARY", Users.USERS, new OrderField[] { Users.USERS.ID }, true);
     }
 }

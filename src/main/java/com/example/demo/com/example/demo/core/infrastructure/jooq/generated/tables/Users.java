@@ -21,7 +21,7 @@ import org.jooq.Identity;
 import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Record;
-import org.jooq.Row6;
+import org.jooq.Row7;
 import org.jooq.Schema;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -43,7 +43,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Users extends TableImpl<UsersRecord> {
 
-    private static final long serialVersionUID = -1312541797;
+    private static final long serialVersionUID = 1343051384;
 
     /**
      * The reference instance of <code>task_manage.users</code>
@@ -77,6 +77,11 @@ public class Users extends TableImpl<UsersRecord> {
      * The column <code>task_manage.users.is_deleted</code>.
      */
     public final TableField<UsersRecord, Byte> IS_DELETED = createField(DSL.name("is_deleted"), org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>task_manage.users.group_id</code>.
+     */
+    public final TableField<UsersRecord, Integer> GROUP_ID = createField(DSL.name("group_id"), org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>task_manage.users.created_on</code>.
@@ -128,7 +133,7 @@ public class Users extends TableImpl<UsersRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.USERS_PRIMARY);
+        return Arrays.<Index>asList(Indexes.USERS_FK_GROUPS, Indexes.USERS_PRIMARY);
     }
 
     @Override
@@ -144,6 +149,15 @@ public class Users extends TableImpl<UsersRecord> {
     @Override
     public List<UniqueKey<UsersRecord>> getKeys() {
         return Arrays.<UniqueKey<UsersRecord>>asList(Keys.KEY_USERS_PRIMARY);
+    }
+
+    @Override
+    public List<ForeignKey<UsersRecord, ?>> getReferences() {
+        return Arrays.<ForeignKey<UsersRecord, ?>>asList(Keys.USERS_IBFK_1);
+    }
+
+    public Groups groups() {
+        return new Groups(this, Keys.USERS_IBFK_1);
     }
 
     @Override
@@ -173,11 +187,11 @@ public class Users extends TableImpl<UsersRecord> {
     }
 
     // -------------------------------------------------------------------------
-    // Row6 type methods
+    // Row7 type methods
     // -------------------------------------------------------------------------
 
     @Override
-    public Row6<Integer, String, String, Byte, Timestamp, Timestamp> fieldsRow() {
-        return (Row6) super.fieldsRow();
+    public Row7<Integer, String, String, Byte, Integer, Timestamp, Timestamp> fieldsRow() {
+        return (Row7) super.fieldsRow();
     }
 }
