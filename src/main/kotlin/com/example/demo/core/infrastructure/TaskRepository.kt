@@ -48,10 +48,9 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
             .where(Tasks.TASKS.ID.eq(id.value))
             .firstOrNull()
 
-        if (result != null) {
+        result?.let{
             return Task(TaskId(result.get(Tasks.TASKS.ID)), TaskName(result.get(Tasks.TASKS.NAME)),result.get(Tasks.TASKS.USER_ID),result.get(Tasks.TASKS.GROUP_ID))
-        }
-        throw ValidationException("存在しないIDです。")
+        } ?: throw ValidationException("存在しないIDです。")
     }
 
     override fun save(task: Task): TaskId {
