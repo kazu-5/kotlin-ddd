@@ -3,7 +3,6 @@ package com.example.demo.api.controller
 import com.example.demo.api.controller.shared.response.EmptyResponse
 import com.example.demo.api.controller.shared.response.IResponse
 import com.example.demo.api.controller.shared.response.Response
-import com.example.demo.core.domain.Task
 import com.example.demo.core.domain.TaskId
 import com.example.demo.core.usecase.TaskDetailDto
 import com.example.demo.core.usecase.TaskDto
@@ -15,12 +14,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/tasks")
-class TasksController(private val taskService: TaskUseCase) {
+class TasksController(private val taskUseCase: TaskUseCase) {
 
     @GetMapping("")
     fun index(): IResponse {
-        println(taskService.list())
-        val tasks:List<TaskDto>? = taskService.list()?.map { (id,name) -> TaskDto(id.value, name.value) }
+        val tasks:List<TaskDto>? = taskUseCase.list()?.map { (id,name) -> TaskDto(id.value, name.value) }
         if (tasks != null) {
             return Response<List<TaskDto>>(tasks)
         } else {
@@ -30,7 +28,7 @@ class TasksController(private val taskService: TaskUseCase) {
 
     @GetMapping("/{taskId}")
     fun show(@PathVariable taskId: Int): IResponse {
-        val task = taskService.get(TaskId(taskId))
+        val task = taskUseCase.get(TaskId(taskId))
         if (task != null) {
             val taskDetail = TaskDetailDto(task.id.value,task.name.value)
             return Response<TaskDetailDto>(taskDetail)
