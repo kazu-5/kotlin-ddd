@@ -42,7 +42,7 @@ class TasksController(private val taskUseCase: TaskUseCase) {
     @ResponseStatus(HttpStatus.CREATED)
     fun post(@RequestBody body: TaskCreateRequestBody): IResponse {
         val taskId:TaskId = taskUseCase.create(body.name, 1, body.groupId)
-        return Response<TaskId>(taskId)
+        return Response<Int>(taskId.value)
     }
 
     @ExceptionHandler(ValidationException::class)
