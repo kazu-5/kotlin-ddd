@@ -25,14 +25,12 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
             .from(Tasks.TASKS)
             .fetch()
 
-        if (result != null) {
-            val list = result.map { r ->
+        result?.let{
+            return result.map { r ->
                 r.get(Tasks.TASKS.NAME)
                 Task(TaskId(r.get(Tasks.TASKS.ID)), TaskName(r.get(Tasks.TASKS.NAME)),r.get(Tasks.TASKS.USER_ID),r.get(Tasks.TASKS.GROUP_ID))
             }
-            return list
-        }
-        return null
+        }?: return null
     }
 
     override fun find(id: TaskId): Task {

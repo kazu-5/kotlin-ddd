@@ -4,7 +4,10 @@ import com.example.demo.api.controller.shared.response.EmptyResponse
 import com.example.demo.api.controller.shared.response.IResponse
 import com.example.demo.api.controller.shared.response.Response
 import com.example.demo.api.controller.shared.response.ValidationResponse
+import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Tasks
+import com.example.demo.core.domain.Task
 import com.example.demo.core.domain.TaskId
+import com.example.demo.core.domain.TaskName
 import com.example.demo.core.shared.exception.ValidationException
 import com.example.demo.core.usecase.TaskDetailDto
 import com.example.demo.core.usecase.TaskDto
@@ -22,22 +25,17 @@ class TasksController(private val taskUseCase: TaskUseCase) {
         val tasks:List<TaskDto>? = taskUseCase.list()?.map {
             TaskDto(it.id, it.name)
         }
-        if (tasks != null) {
+        tasks?.let{
             return Response<List<TaskDto>>(tasks)
-        } else {
-            return EmptyResponse()
-        }
+        } ?: return EmptyResponse()
     }
 
     @GetMapping("/{taskId}")
     fun show(@PathVariable taskId: Int): IResponse {
         val task = taskUseCase.get(TaskId(taskId))
-        if (task != null) {
-            val taskDetail = TaskDetailDto(task.id!!.value,task.name.value)
-            return Response<TaskDetailDto>(taskDetail)
-        } else {
-            return EmptyResponse()
-        }
+        task?.let{
+            return Response<TaskDetailDto>(TaskDetailDto(task.id!!.value,task.name.value))
+        } ?: return EmptyResponse()
     }
 
     @PostMapping()
