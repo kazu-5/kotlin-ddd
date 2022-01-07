@@ -1,6 +1,8 @@
 package com.example.demo.core.infrastructure
 
 import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Tasks
+import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Users
+import com.example.demo.com.example.demo.core.infrastructure.jooq.generated.tables.Users.USERS
 import com.example.demo.core.domain.ITaskRepository
 import com.example.demo.core.domain.Task
 import com.example.demo.core.domain.TaskId
@@ -22,7 +24,7 @@ class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
             Tasks.TASKS.CREATED_ON,
             Tasks.TASKS.UPDATED_ON
         )
-            .from(Tasks.TASKS)
+            .from(Tasks.TASKS).join(USERS).on(Tasks.TASKS.USER_ID.eq(USERS.ID))
             .fetch()
 
         result?.let{
