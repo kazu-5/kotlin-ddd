@@ -16,9 +16,10 @@ import java.sql.Timestamp
 class TaskRepository(private val ctx: DSLContext) : ITaskRepository {
 
     override fun findAll(): List<Task>? {
-        val result: Result<Record6<Int, String, Int, Int, Timestamp, Timestamp>>? = ctx.select(
+        val result: Result<Record7<Int, String, String, Int, Int, Timestamp, Timestamp>>? = ctx.select(
             Tasks.TASKS.ID,
             Tasks.TASKS.NAME,
+            Users.USERS.NAME,
             Tasks.TASKS.USER_ID,
             Tasks.TASKS.GROUP_ID,
             Tasks.TASKS.CREATED_ON,
